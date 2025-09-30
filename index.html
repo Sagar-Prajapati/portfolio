@@ -205,11 +205,7 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
-            opacity: 0;
-            transform: translateY(50px);
-            animation-delay: 0.5s;
-            animation-fill-mode: forwards;
+            animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate, fadeInUp 1s ease 0.5s forwards;
         }
 
         .hero-title::before {
@@ -1052,24 +1048,8 @@
             }
         });
 
-        // Typing Effect for Hero Title
-        const heroTitle = document.querySelector('.hero-title');
-        if (heroTitle) {
-            const text = heroTitle.textContent;
-            heroTitle.textContent = '';
-            let i = 0;
-            
-            setTimeout(() => {
-                const typeInterval = setInterval(() => {
-                    if (i < text.length) {
-                        heroTitle.textContent += text.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typeInterval);
-                    }
-                }, 100);
-            }, 1000);
-        }
+        // Typing Effect for Hero Title (disabled to show title immediately)
+        // The title is now visible by default with gradient animation
 
         // Glitch Effect on Section Titles
         document.querySelectorAll('.section-title').forEach(title => {
