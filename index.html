@@ -629,18 +629,80 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
+            body {
+                cursor: auto;
+            }
+
+            .custom-cursor {
+                display: none;
+            }
+
             nav {
-                left: 20px;
-                right: 20px;
+                left: 10px;
+                right: 10px;
                 transform: none;
-                width: calc(100% - 40px);
+                width: calc(100% - 20px);
+                padding: 10px 15px;
             }
 
             nav ul {
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 15px;
+                gap: 10px;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+
+            .hero {
+                padding: 0 1rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2rem, 10vw, 3rem);
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1rem, 4vw, 1.3rem);
+            }
+
+            .cta-group {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .cta-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .section-title {
+                font-size: clamp(1.5rem, 6vw, 2.5rem);
+            }
+
+            .section-title::before,
+            .section-title::after {
+                display: none;
             }
 
             .about-grid {
@@ -656,22 +718,109 @@
                 margin: 0 auto;
             }
 
+            .about-text {
+                font-size: 1rem;
+            }
+
+            .holo-container {
+                padding: 2rem 1.5rem;
+            }
+
             .skills-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .skill-card {
+                padding: 1.5rem;
+            }
+
+            .skill-title {
+                font-size: 1.2rem;
             }
 
             .projects-grid {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
 
-            .section-title::before,
-            .section-title::after {
-                display: none;
+            .project-card {
+                padding: 2rem 1.5rem;
             }
 
-            .cta-group {
-                flex-direction: column;
-                align-items: center;
+            .project-title {
+                font-size: 1.3rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .contact-item {
+                padding: 1.5rem 1rem;
+            }
+
+            /* Disable 3D transforms on mobile for better performance */
+            .skill-card:hover,
+            .project-card:hover {
+                transform: translateY(-5px) !important;
+            }
+
+            /* Reduce particle count on mobile */
+            .hero::after {
+                opacity: 0.4;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 8px 10px;
+            }
+
+            nav ul {
+                gap: 8px;
+            }
+
+            nav ul li a {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .avatar {
+                width: 150px;
+                height: 150px;
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .holo-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .skill-card,
+            .project-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-item {
+                padding: 1.5rem;
             }
         }
 
@@ -881,23 +1030,26 @@
 
         // Skill Card Tilt Effect
         document.querySelectorAll('.skill-card, .project-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+            // Only enable tilt on desktop
+            if (window.innerWidth > 768) {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                });
                 
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            }
         });
 
         // Typing Effect for Hero Title
@@ -1001,7 +1153,7 @@
         // Particle System for Hero Section
         function createParticles() {
             const hero = document.querySelector('.hero');
-            const particleCount = 50;
+            const particleCount = window.innerWidth > 768 ? 50 : 20; // Fewer particles on mobile
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
